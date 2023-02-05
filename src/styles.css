@@ -38,6 +38,7 @@ button {
   cursor: pointer;
   text-align: left;
   color: inherit;
+  font-size: 1.15rem;
 }
 
 .wrapper {
@@ -107,6 +108,55 @@ h1 {
   font-size: 2rem;
 }
 
+.keyboard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.keys {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 4px;
+  justify-content: center;
+}
+
+.key {
+  position: relative;
+  width: 35px;
+  display: grid;
+  place-content: center;
+  aspect-ratio: 1 / 1;
+  border: 2px solid var(--color-gray-700);
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.key.unused {
+  background: var(--color-gray-900);
+  border-color: var(--color-gray-900);
+  color: black;
+}
+
+.key.correct {
+  background: var(--color-success);
+  border-color: var(--color-success);
+  color: white;
+}
+
+.key.incorrect {
+  background: var(--color-gray-300);
+  border-color: var(--color-gray-300);
+  color: white;
+}
+
+.key.misplaced {
+  background: var(--color-warning);
+  border-color: var(--color-warning);
+  color: white;
+}
+
 /*
   Round the corners for the 4 cells at the very corners of
   the game board
@@ -162,6 +212,7 @@ h1 {
 }
 
 .banner {
+  z-index: 1;
   position: fixed;
   left: 0;
   right: 0;
