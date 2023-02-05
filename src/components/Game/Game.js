@@ -38,10 +38,8 @@ function Game() {
   }
   function handlerGuessInput() {
     const checkGuessResult = checkGuess(guessInput, answer);
-    console.info({ checkGuessResult });
     const newGuessList = [...guessList];
     newGuessList.push(checkGuessResult);
-    console.info({ newGuessList });
     setGuessList(newGuessList);
     setGuessInput("");
 
