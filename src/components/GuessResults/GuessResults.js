@@ -10,15 +10,12 @@ function GuessResults({ guessList }) {
         return (
           <p className="guess" key={index}>
             {range(NUM_OF_LENGTH_WORD).map((charIndex) => {
+              const letter = word[charIndex];
               const spanClass =
-                word !== undefined && word[charIndex] !== undefined
-                  ? `cell ${word[charIndex].status}`
-                  : "cell";
+                letter.letter !== undefined ? `cell ${letter.status}` : "cell";
               return (
                 <span className={spanClass} key={charIndex}>
-                  {word !== undefined && word[charIndex]
-                    ? word[charIndex].letter
-                    : ""}
+                  {letter.letter}
                 </span>
               );
             })}

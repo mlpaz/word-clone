@@ -3,7 +3,7 @@ import GuessInput from "../GuessInput";
 import GuessResults from "../GuessResults";
 import BannerResult from "../BannerResult";
 import Keyboard from "../Keyboard";
-import { sample } from "../../utils";
+import { range, sample } from "../../utils";
 import { WORDS } from "../../data";
 import { checkGuess } from "../../game-helpers";
 import {
@@ -19,29 +19,54 @@ console.info({ answer });
 
 function Game() {
   const [guessInput, setGuessInput] = React.useState("");
-  const [guessList, setGuessList] = React.useState([]);
-  const [status, setStatus] = React.useState("inGame");
 
+  const [status, setStatus] = React.useState("inGame");
+  const initGuessList = range(6).map((row) => {
+    return range(5).map((column) => {
+      return {
+        id: `r${row}c${column}-${crypto.randomUUID()}`,
+        letter: "",
+      };
+    });
+  });
+
+  const [guessCount, setGuessCount] = React.useState(0);
+  const [guessList, setGuessList] = React.useState(initGuessList);
   const intialKeyMap = {};
   KEYBOARD_LETTERS.forEach((key) => {
     intialKeyMap[key] = states.UNUSED;
   });
 
   const [keysMap, setKeysMap] = React.useState(intialKeyMap);
+
   function restartGame() {
     setGuessInput("");
-    setGuessList([]);
+    setGuessList(initGuessList);
     setStatus("inGame");
     setKeysMap(intialKeyMap);
+    setGuessCount(0);
     answer = sample(WORDS);
     console.info({ answer });
   }
-  function handlerGuessInput() {
-    const checkGuessResult = checkGuess(guessInput, answer);
+
+  function updateGuessRow(checkGuessResult) {
     const newGuessList = [...guessList];
+    const newGuess = newGuessList[guessCount];
+    checkGuessResult.forEach((checkLetter, index) => {
+      const currentLetter = newGuess[index];
+      currentLetter.status = checkLetter.status;
+      currentLetter.letter = checkLetter.letter;
+    });
     newGuessList.push(checkGuessResult);
     setGuessList(newGuessList);
+  }
+
+  function handlerGuessInput() {
+    const checkGuessResult = checkGuess(guessInput, answer);
+    updateGuessRow(checkGuessResult);
     setGuessInput("");
+    const newGuessCount = guessCount + 1;
+    setGuessCount(newGuessCount);
 
     const lettersCorrect = checkGuessResult.filter(
       (letter) => letter.status === "correct"
@@ -50,7 +75,7 @@ function Game() {
     // check win and loose conditions
     if (lettersCorrect.length === NUM_OF_LENGTH_WORD) {
       setStatus("win");
-    } else if (newGuessList.length === NUM_OF_GUESSES_ALLOWED) {
+    } else if (newGuessCount === NUM_OF_GUESSES_ALLOWED) {
       setStatus("loose");
     }
 
@@ -66,7 +91,7 @@ function Game() {
     <>
       <BannerResult
         status={status}
-        tries={guessList.length}
+        tries={guessCount}
         answer={answer}
         restartGame={restartGame}
       ></BannerResult>
@@ -75,7 +100,7 @@ function Game() {
         guessInput={guessInput}
         handlerGuessInput={handlerGuessInput}
         setGuessInput={setGuessInput}
-        guessListLength={guessList.length}
+        guessCount={guessCount}
       ></GuessInput>
       <Keyboard keysMap={keysMap}></Keyboard>
     </>

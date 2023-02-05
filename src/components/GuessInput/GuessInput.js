@@ -1,7 +1,8 @@
 import React from "react";
+import { NUM_OF_LENGTH_WORD } from "../../constants";
 
 function GuessInput({
-  guessListLength,
+  guessCount,
   guessInput,
   handlerGuessInput,
   setGuessInput,
@@ -11,18 +12,23 @@ function GuessInput({
       className="guess-input-wrapper"
       onSubmit={(event) => {
         event.preventDefault();
-        handlerGuessInput(event.target.value);
+        console.log(guessInput);
+        if (guessInput.length !== 5) {
+          window.alert("Please enter exactly 5 (five) characters :) ");
+        }
+        handlerGuessInput();
       }}
     >
       <label htmlFor="guess-input">Enter guess:</label>
       <input
-        disabled={guessListLength >= 6}
+        disabled={guessCount >= 6}
         id="guess-input"
         type="text"
         value={guessInput}
-        requiered
-        minLength="5"
-        maxLength="5"
+        required
+        maxLength={NUM_OF_LENGTH_WORD}
+        pattern="[a-zA-Z]{5}"
+        title="5 letter word"
         onChange={(event) => setGuessInput(event.target.value.toUpperCase())}
       />
     </form>
