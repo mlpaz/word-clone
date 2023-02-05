@@ -20,6 +20,8 @@ function GuessInput({
         id="guess-input"
         type="text"
         value={guessInput}
+        requiered
+        minLength="5"
         maxLength="5"
         onChange={(event) => setGuessInput(event.target.value.toUpperCase())}
       />
