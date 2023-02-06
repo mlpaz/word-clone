@@ -11,6 +11,7 @@ import {
   NUM_OF_GUESSES_ALLOWED,
   KEYBOARD_LETTERS,
   states,
+  gameStatus,
 } from "../../constants";
 // Pick a random word on every pageload.
 let answer = sample(WORDS);
@@ -20,7 +21,7 @@ console.info({ answer });
 function Game() {
   const [guessInput, setGuessInput] = React.useState("");
 
-  const [status, setStatus] = React.useState("inGame");
+  const [status, setStatus] = React.useState(gameStatus.RUNNING);
   const initGuessList = range(6).map((row) => {
     return range(5).map((column) => {
       return {
@@ -42,7 +43,7 @@ function Game() {
   function restartGame() {
     setGuessInput("");
     setGuessList(initGuessList);
-    setStatus("inGame");
+    setStatus(gameStatus.RUNNING);
     setKeysMap(intialKeyMap);
     setGuessCount(0);
     answer = sample(WORDS);
@@ -74,9 +75,9 @@ function Game() {
 
     // check win and loose conditions
     if (lettersCorrect.length === NUM_OF_LENGTH_WORD) {
-      setStatus("win");
+      setStatus(gameStatus.WIN);
     } else if (newGuessCount === NUM_OF_GUESSES_ALLOWED) {
-      setStatus("loose");
+      setStatus(gameStatus.LOOSE);
     }
 
     // update keyboard
@@ -97,10 +98,10 @@ function Game() {
       ></BannerResult>
       <GuessResults guessList={guessList}></GuessResults>
       <GuessInput
+        status={status}
         guessInput={guessInput}
         handlerGuessInput={handlerGuessInput}
         setGuessInput={setGuessInput}
-        guessCount={guessCount}
       ></GuessInput>
       <Keyboard keysMap={keysMap}></Keyboard>
     </>

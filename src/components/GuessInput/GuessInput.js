@@ -1,12 +1,7 @@
 import React from "react";
-import { NUM_OF_LENGTH_WORD } from "../../constants";
+import { NUM_OF_LENGTH_WORD, gameStatus } from "../../constants";
 
-function GuessInput({
-  guessCount,
-  guessInput,
-  handlerGuessInput,
-  setGuessInput,
-}) {
+function GuessInput({ status, guessInput, handlerGuessInput, setGuessInput }) {
   return (
     <form
       className="guess-input-wrapper"
@@ -21,7 +16,7 @@ function GuessInput({
     >
       <label htmlFor="guess-input">Enter guess:</label>
       <input
-        disabled={guessCount >= 6}
+        disabled={status !== gameStatus.RUNNING}
         id="guess-input"
         type="text"
         value={guessInput}

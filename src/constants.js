@@ -34,3 +34,9 @@ export const states = {
   MISPLACED: "misplaced",
   CORRECT: "correct",
 };
+
+export const gameStatus = {
+  RUNNING: "running",
+  WIN: "win",
+  LOOSE: "loose",
+};
